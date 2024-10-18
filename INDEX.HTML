@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fun Schedule Maker - Planify</title>
+  <!-- Import Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background-color: #f0f8ff;
+      margin: 20px;
+      color: #333;
+    }
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    /* Style for Planify name */
+    .planify-title {
+      text-align: center;
+      font-family: 'Bungee Shade', cursive;
+      font-size: 3em;
+      color: #ff6f61;
+      margin-top: 0;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.5em;
+      color: #ff6f61;
+    }
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    label {
+      width: 100%;
+      margin-top: 10px;
+      font-size: 1.2em;
+      color: #555;
+    }
+    input, textarea {
+      padding: 12px;
+      width: 100%;
+      box-sizing: border-box;
+      border: 2px solid #ff6f61;
+      border-radius: 8px;
+      transition: border-color 0.3s ease;
+    }
+    input:focus, textarea:focus {
+      border-color: #ff9966;
+      outline: none;
+    }
+    .schedule-output {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background-color: #ffebcd;
+    }
+    table, th, td {
+      border: 2px solid #ff6f61;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      font-size: 1.1em;
+    }
+    th {
+      background-color: #ff9966;
+      color: white;
+    }
+    td {
+      background-color: #fff;
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .logo img {
+      width: 150px;
+      transition: transform 0.4s ease;
+    }
+    .logo img:hover {
+      transform: rotate(360deg);
+    }
+    button {
+      padding: 12px 20px;
+      font-size: 1.2em;
+      background-color: #ff6f61;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    button:hover {
+      background-color: #ff9966;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="logo">
+    <img src="/mnt/data/image.png" alt="Logo">
+  </div>
+
+  <!-- Planify title -->
+  <h1 class="planify-title">Planify</h1>
+
+  <h1>Fun Schedule Maker</h1>
+  <form id="schedule-form">
+    <label for="days">Days (comma separated, e.g. 1,2,3,4,5,6):</label>
+    <input type="text" id="days" placeholder="Enter days" required>
+
+    <label for="periods">Periods (comma separated, e.g. 1,2,3):</label>
+    <input type="text" id="periods" placeholder="Enter periods" required>
+
+    <label for="rooms">Room Numbers (comma separated):</label>
+    <input type="text" id="rooms" placeholder="Enter room numbers" required>
+
+    <label for="homerooms">Homeroom (comma separated):</label>
+    <input type="text" id="homerooms" placeholder="Enter homeroom" required>
+
+    <label for="staff">Staff (comma separated, format: Name (email@example.com)):</label>
+    <textarea id="staff" placeholder="Enter staff names and emails" required></textarea>
+
+    <button type="button" onclick="generateSchedule()">Generate Schedule</button>
+  </form>
+
+  <div class="schedule-output" id="schedule-output"></div>
+</div>
+
+<script>
+  function generateSchedule() {
+    const days = document.getElementById('days').value.split(',');
+    const periods = document.getElementById('periods').value.split(',');
+    const rooms = document.getElementById('rooms').value.split(',');
+    const homerooms = document.getElementById('homerooms').value.split(',');
+    const staff = document.getElementById('staff').value.split('\n'); // Split by new lines
+
+    if (!days.length || !periods.length || !rooms.length || !homerooms.length || !staff.length) {
+      alert('Please fill out all fields');
+      return;
+    }
+
+    const scheduleOutput = document.getElementById('schedule-output');
+    scheduleOutput.innerHTML = ''; // clear previous results
+
+    // Create a table for the schedule
+    let scheduleTable = '<table><tr><th>Days</th><th>Periods</th><th>Room #</th><th>Homeroom</th><th>Staff</th></tr>';
+
+    for (let i = 0; i < days.length; i++) {
+      const day = days[i]?.trim() || '';
+      const period = periods[i]?.trim() || '';
+      const room = rooms[i]?.trim() || '';
+      const homeroom = homerooms[i]?.trim() || '';
+      const staffMember = staff[i]?.trim() || '';
+
+      scheduleTable += `<tr><td>${day}</td><td>${period}</td><td>${room}</td><td>${homeroom}</td><td>${staffMember}</td></tr>`;
+    }
+
+    scheduleTable += '</table>';
+    scheduleOutput.innerHTML = scheduleTable;
+  }
+</script>
+
+</body>
+</html>
